@@ -17,7 +17,9 @@
 			{{ Form::password('password', array('class'=>'form-control', 'placeholder'=>'Password','required')) }}<?php echo $errors->first('password', '<label class="error pull-right">:message</label>'); ?><br/>
 	   
 			{{ Form::password('password_confirmation', array('class'=>'form-control', 'placeholder'=>'Confirm Password','required')) }}<?php echo $errors->first('password_confirmation', '<label class="error pull-right">:message</label>'); ?><br/>
-	   
+			
+			{{Form::select('useras',array('1' => 'As a General User', '2' => 'As an Identifier'), '1',array('class'=>'form-control'))}}<br/><br/>
+			
 			{{ Form::submit('Register', array('class'=>'btn btn-primary'))}}
 
 		{{ Form::close() }}

@@ -65,7 +65,7 @@
         </style>
         <!-- <link rel="stylesheet" href="css/bootstrap-theme.min.css"> -->
         <link rel="stylesheet" href="{{URL::asset('css/main.css') }}" >
-		<link rel="stylesheet" href="{{URL::asset('css/upload/jquery.fileupload.css') }}" >
+		<link rel="stylesheet" href="{{URL::asset('css/upload/jquery.plupload.queue.css') }}" >
 
         <script src="{{URL::asset('js/vendor/modernizr-2.6.2-respond-1.1.0.min.js') }}"></script>
     </head>
@@ -172,7 +172,6 @@
 	    <!--End of Footer -->
         
         <script src="{{ URL::asset('js/vendor/jquery-1.10.1.min.js')}}"></script>
-
         <script src="{{ URL::asset('js/vendor/bootstrap.js')}}"></script>
 
 
@@ -181,18 +180,11 @@
 
         <script src="{{ URL::asset('js/plugins.js')}}"></script>
         <script src="{{ URL::asset('js/main.js')}}"></script>
-
-<!--This are for file upload-->
-
 		<!-- Third party script for BrowserPlus runtime (Google Gears included in Gears runtime now) -->
-		<script type="text/javascript" src="{{ URL::asset('js/vendor/fileupload/jquery.ui.widget.js')}}"></script>
+		<script type="text/javascript" src="{{ URL::asset('js/plupload/js/browserplus-min.js')}}"></script>
 		<!-- Load plupload and all it's runtimes and finally the jQuery queue widget -->
-		<script type="text/javascript" src="{{ URL::asset('js/vendor/fileupload/jquery.iframe-transport.js')}}"></script>
-		<script type="text/javascript" src="{{ URL::asset('js/vendor/fileupload/jquery.fileupload.js')}}"></script>
-<!--This are for audio play -->
-
-		<script type="text/javascript" src="{{ URL::asset('js/vendor/audiojs/audio.min.js')}}"></script>
-
+		<script type="text/javascript" src="{{ URL::asset('js/plupload/js/plupload.full.min.js')}}"></script>
+		<script type="text/javascript" src="{{ URL::asset('js/plupload/js/jquery.plupload.queue.js')}}"></script>
 		<script type="text/javascript">
 		function getCookie(name) 
 			{ 
@@ -202,11 +194,10 @@
 			}
 		$(document).ready(function() {
 			$('#myCarousel').carousel({
-				interval: 10000
+			interval: 10000
 			});	
 
 			//$(".alert").delay(3200).fadeOut(300);
-
 			$(".nav li").click(function(){
 				/* var actv='\"#'+this.id+'\"';
 				//alert();
@@ -215,55 +206,48 @@
 				alert(getCookie("lastclick"));
 				//$().addClass("active"); */
 			});
+			// Setup html5 version
+			$("#html5_uploader").pluploadQueue({
+				// General settings
+				runtimes : 'html5',
+				url : '../../upload',
+				chunk_size : '1mb',
+				unique_names : true,
+				
+				filters : {
+					max_file_size : '10mb',
+					mime_types: [
+						{title : "Image files", extensions : "jpg,gif,png"},
+						{title : "Zip files", extensions : "zip"}
+					]
+				},
 
-			/*=================For file upload===============*/
-			var url = 'upload';
-			    $('#fileupload').fileupload({
-			        url: url,
-			        dataType: 'json',
-			        done: function (response) {
-			          //ajax call to update the upload table 
-							var xmlhttp;
-							if (window.XMLHttpRequest)
-							  {// code for IE7+, Firefox, Chrome, Opera, Safari
-							  xmlhttp=new XMLHttpRequest();
-							  }
-							else
-							  {// code for IE6, IE5
-							  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-							  }
-							xmlhttp.onreadystatechange=function()
-							  {
-							  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-							    {
-							        $(xmlhttp.responseText).find('#alluploads').each(function(){
-					                document.getElementById("alluploads").innerHTML=$(this).html(); //here including the div content
-					            });
-							    
-							    }
-							  }
-							xmlhttp.open("GET","upload",true);
-							xmlhttp.send();
-							
-					    },
-			        progressall: function (e, data) {
-			            var progress = parseInt(data.loaded / data.total * 100, 10);
-			            $('#progress .progress-bar').css(
-			                'width',
-			                progress + '%'
-			            );
-			        }
-			    }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+				// Resize images on clientside if we can
+				resize : {quality : 90}
+			});
 
-			/*===============End=============*/
 
-			/*============for sudio play==========*/
-			audiojs.events.ready(function() {
-			    var as = audiojs.createAll();
-			  });
-			/*============end============*/
-
+			// Setup html4 version
+			$("#html4_uploader").pluploadQueue({
+				// General settings
+				runtimes : 'html4',
+				url : '../../upload',
+				unique_names : true,				
+				filters : {
+					mime_types: [
+						{title : "Image files", extensions : "jpg,gif,png"},
+						{title : "Zip files", extensions : "zip"}
+					]
+				},
+			});
 		});
+		var canvas = document.createElement('canvas'), context;
+			if (!canvas.getContext) {
+				$("#html5_uploader").hide();
+			}
+			else{
+				$("#html4_uploader").hide();
+			}
 		Holder.add_theme("dark", {background:"#000", foreground:"#aaa", size:11, font: "Monaco"})
 		</script>
         <!--

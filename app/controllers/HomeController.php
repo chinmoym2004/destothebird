@@ -21,7 +21,10 @@ class HomeController extends BaseController {
 	}
 	public function getAudiogallery()
 	{
-		$this->layout->content = View::make('home.audiogallery');
+			$data=array('alluploadbyu' => DB::table('users_upload')
+            ->join('users', 'users.id', '=', 'users_upload.uid')->where('users_upload.status','=','verified')
+            ->select('users.firstname','users.lastname','users.email','users_upload.filpath','users_upload.specisname','users_upload.specificname','users_upload.area')->get());
+		$this->layout->content = View::make('home.audiogallery',$data);
 	}
 
 }

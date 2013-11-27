@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 // Settings
 //$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-$targetDir = 'uploads';
+$targetDir = 'http://localhost/thebird/public/uploads/';
 $cleanupTargetDir = false; // Remove old files
 $maxFileAge = 5 * 3600; // Temp file age in seconds
 
@@ -50,12 +50,10 @@ if (!file_exists($targetDir)) {
 }
 
 // Get a file name
-if (isset($_REQUEST["filename"])) {
-	$fileName = $_REQUEST["filename"];
+if (isset($_REQUEST["name"])) {
+	$fileName = $_REQUEST["name"];
 } elseif (!empty($_FILES)) {
-	//print_r($_FILES);exit;
 	$fileName = $_FILES["file"]["name"];
-	//echo $fileName;exit;
 } else {
 	$fileName = uniqid("file_");
 }
@@ -67,8 +65,7 @@ $filePath = $targetDir . '/' . $fileName;
 $id = Auth::user()->id;
 
 // insert file info into db ---
-
-
+ 
 DB::table('users_upload')->insert(
     array('uid' => $id, 'filpath' => $filePath,'status'=>'Not verified','specisname'=>'Not verified','specificname'=>'Not verified','area'=>'Not verified','identfId'=>0,'created_at'=>date("Y-m-d H:i:s"))
 );

@@ -13,7 +13,10 @@
 
 App::before(function($request)
 {
-	//
+	/*if ( ! Sentry::check())
+        {
+                return Redirect::route('admin.login');
+        }*/
 });
 
 

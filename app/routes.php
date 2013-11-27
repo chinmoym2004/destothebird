@@ -37,5 +37,5 @@ Route::post('password/reset/{token}', array(
   'as' => 'password.update'
 ));
 
-Route::get('users/upload', array('before' => 'auth.basic','UsersController@getUpload'));
-Route::post('users/upload', array('before' => 'auth.basic','UsersController@postUpload'));
+Route::get('users/upload', array('before' => 'auth','UsersController@getUpload'));
+Route::post('users/upload', array('before' => 'auth','UsersController@postUpload'));

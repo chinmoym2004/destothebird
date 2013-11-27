@@ -1,31 +1,23 @@
-<div>
-    <span class="btn btn-success fileinput-button">
-        <i class="glyphicon glyphicon-plus"></i>
-        <span>Select files...</span>
-        <!-- The file input field used as target for the file upload widget -->
-        <input type="file" multiple="" name="file" id="fileupload" accept="audio/*">
-    </span>
-    <br>
-    <br>
-    <!-- The global progress bar -->
-    <div id="progress" class="progress">
-        <div class="progress-bar progress-bar-success"></div>
-    </div>
-    <!-- The container for the uploaded files -->
-    <div id="files" class="files"></div>
-    <br>
+<div class="row">
+{{ Form::open(array('url'=>'users/identifyrequest', 'class'=>'form-signin')) }}
+	<div class="col-md-8" style="margin-top:10px;">
+		<div id="html4_uploader" style="height: 330px; position: relative;">Your browser doesn't have HTML 4 support.</div>
+	
+		<div id="html5_uploader" style="height: 330px; position: relative;">Your browser doesn't support native upload.</div>
+	</div>
+	<div class="col-md-4" style="margin-top:150px;">
+	{{ Form::submit('Send Identify Request', array('class'=>'btn btn-default'))}}
+	</div>
+{{ Form::close() }}
 
 </div>
-
-
-
 
 <div class="container">
 	      		<h2>Your uploads</h2>     
 
 	        <!-- Thumbnail Carousel -->
 
-	        <div class="scroll-containera table-responsive" id="alluploads">
+	        <div class="scroll-containera table-responsive">
 	                        <table class="table table-hover tablesorter" cellspacing="1" id="birdTable">
 	                        	<thead>
 	                        		<tr>
@@ -42,11 +34,10 @@
 								@foreach ($alluploadbyu as $upload)
 									<tr>
 									  <td>{{ $upload->id }}</td>
-									  <td>Play</td>
-<!-- 									  <td><audio src="upload/<?php //echo $upload->filpath;?>" preload="auto" /></td>
- -->									  <td>{{ $upload->created_at }}</td>
+									  <td>{{ $upload->filpath }}</td>
+									  <td>{{ $upload->created_at }}</td>
 									  <td>{{ $upload->status }}</td>
-									  
+									  <td>Play</td>
 									</tr>
 								@endforeach
 								

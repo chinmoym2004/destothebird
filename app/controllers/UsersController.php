@@ -23,6 +23,7 @@ class UsersController extends BaseController {
 		   $user->lastname = Input::get('lastname');
 		   $user->email = Input::get('email');
 		   $user->password = Hash::make(Input::get('password'));//Input::get('password');
+		   $user->useras = Input::get('useras');
 		   $user->save();
 		   return Redirect::to('users/login')->with('message', 'Thanks for registering!');
 	   } 
@@ -50,25 +51,14 @@ class UsersController extends BaseController {
 		}	  
 	}
 	
-	public function getDashboard() {
-		$this->layout->content = View::make('users.dashboard');
-	}
 	public function getLogout() {
 	   Auth::logout();
 	   return Redirect::to('/');//->with('message', 'Your are now logged out!');
 	}
-	public function getList()
-	{
-		//$users = DB::table('users')->get();
-		//print_r($users);exit;
-		$data=array('users' => DB::table('users')->get());
-		$this->layout->content = View::make('users.list',$data);
-	}
 	public function getIdentify(){
-	/*  var_dump(Auth::user());
-		exit; 
-	*/
 		$data=array('title'=>'identify the bird');
+		$id = Auth::user()->id;
+		$data=array('all_un_identified' => DB::table('users_upload')->where('uid','=',$id)->get());		
 		$this->layout->content = View::make('users.identify',$data);
 	} 
 	public function postUpload(){
@@ -78,7 +68,7 @@ class UsersController extends BaseController {
 	public function getUpload(){
 		//$data=array('title'=>'Upload audio to identify the bird');
 		$id = Auth::user()->id;
-		$data=array('alluploadbyu' => DB::table('users_upload')->where('uid','=',$id)->get());		
+		$data=array('alluploadbyu' => DB::table('users_upload')->where('uid','=',$id)->orderBy('created_at', 'desc')->get());		
 		$this->layout->content = View::make('users.uploading',$data);
 	}
 	public function getIdentifyrequest(){
