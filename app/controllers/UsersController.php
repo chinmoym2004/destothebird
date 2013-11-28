@@ -79,4 +79,23 @@ class UsersController extends BaseController {
 		$data=array('title'=>'Upload audio to identify the bird');
 		$this->layout->content = View::make('users.identifyrequest',$data);
 	}
+	public function postUploadedinfoupdate($id){
+		$specisname=Input::get('specisname')?Input::get('specisname'):'NA';
+		$specificname=Input::get('specificname')?Input::get('specificname'):'NA';
+		$area=Input::get('area')?Input::get('area'):'NA';
+		$recorded_on=Input::get('recorded_on')?Input::get('recorded_on'):'NA';
+		DB::table('users_upload')
+            ->where('id', $id)
+            ->update(array('specisname' => $specisname,'specificname' => $specificname,'area' => $area,'recorded_on' => $recorded_on));
+       //$this->layout->content = View::make('users.uploading');
+        $id = Auth::user()->id;
+		$data=array('alluploadbyu' => DB::table('users_upload')->where('uid','=',$id)->orderBy('created_at', 'desc')->get());		
+		$this->layout->content = View::make('users.uploading',$data);
+	}
+	public function postUploadedinfodelete($id){
+	        DB::table('users_upload')->where('id', '=', $id)->delete();
+	        $id = Auth::user()->id;
+			$data=array('alluploadbyu' => DB::table('users_upload')->where('uid','=',$id)->orderBy('created_at', 'desc')->get());		
+			$this->layout->content = View::make('users.uploading',$data);
+		}
 }

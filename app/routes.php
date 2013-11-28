@@ -39,3 +39,6 @@ Route::post('password/reset/{token}', array(
 
 Route::get('users/upload', array('before' => 'auth','UsersController@getUpload'));
 Route::post('users/upload', array('before' => 'auth','UsersController@postUpload'));
+
+Route::post('users/uploadedinfoupdate/{id}',array('UsersController@postUploadedinfoupdate'));
+Route::post('users/uploadedinfodelete/{id}',array('UsersController@postUploadedinfodelete'));

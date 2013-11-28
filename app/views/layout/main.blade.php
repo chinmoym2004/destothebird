@@ -193,6 +193,16 @@
 
 		<script type="text/javascript" src="{{ URL::asset('js/vendor/audiojs/audio.min.js')}}"></script>
 
+<!-- for inline edit options -->
+		<link href="{{ URL::asset('css/bootstrap3-editable/bootstrap-editable.css')}}" rel="stylesheet">
+		<script src="{{ URL::asset('js/bootstrap3-editable/bootstrap-editable.js')}}"></script>
+<!-- end -->
+
+<!-- for date picker -->
+		<link href="{{ URL::asset('css/datepicker/jquery-ui.css')}}" rel="stylesheet">
+		<script src="{{ URL::asset('js/datepicker/jquery-ui.js')}}"></script>
+<!-- end -->
+
 		<script type="text/javascript">
 		function getCookie(name) 
 			{ 
@@ -257,11 +267,109 @@
 
 			/*===============End=============*/
 
-			/*============for sudio play==========*/
+			/*============for audio play==========*/
 			audiojs.events.ready(function() {
 			    var as = audiojs.createAll();
 			  });
 			/*============end============*/
+			/*=========for model wise operation =========*/
+			$("a").click(function(){
+				/*-----for edit-----*/
+				if($(this).hasClass("editinfo"))
+					$("#edituploadinfo").attr("action","uploadedinfoupdate/"+$(this).attr("id"));
+				/*-----for delete-----*/
+				if($(this).hasClass("deleteinfo"))
+					$("#deleteuploadinfo").attr("action","uploadedinfodelete/"+$(this).attr("id"));
+			});
+
+
+			/*==========post all data after edit to update==============*/
+
+				$("#edituploadinfo").submit(function(e) {
+					e.preventDefault();
+
+				    //var url =$(this).attr("action"); // the script where you handle the form input.
+
+				    $.ajax({
+				           type: "POST",
+				           url: $(this).attr("action"),
+				           data: $(this).serialize(), // serializes the form's elements.
+				           success: function(data)
+				           {
+				               $("#edituploadinfo")[0].reset();
+				               $('#editModal').modal('hide');
+				               //ajax call to update the upload table 
+								var xmlhttp;
+								if (window.XMLHttpRequest)
+								  {// code for IE7+, Firefox, Chrome, Opera, Safari
+								  xmlhttp=new XMLHttpRequest();
+								  }
+								else
+								  {// code for IE6, IE5
+								  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+								  }
+								xmlhttp.onreadystatechange=function()
+								  {
+								  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+								    {
+								        $(xmlhttp.responseText).find('#alluploads').each(function(){
+						                document.getElementById("alluploads").innerHTML=$(this).html(); //here including the div content
+						            });
+								    
+								    }
+								  }
+								xmlhttp.open("GET","upload",true);
+								xmlhttp.send();
+				           }
+				         });
+
+				    return false; // avoid to execute the actual submit of the form.
+				});
+
+
+			/*==========ajax data delete from upload table and dispaly result after delete==============*/
+
+				$("#deleteuploadinfo").submit(function(e) {
+					e.preventDefault();
+				    //var url =$(this).attr("action"); // the script where you handle the form input.
+
+				    $.ajax({
+				           type: "POST",
+				           url: $(this).attr("action"),
+				           data: $(this).serialize(), // serializes the form's elements.
+				           success: function(data)
+				           {
+				         
+				               $('#deleteModal').modal('hide');
+				               //ajax call to update the upload table 
+								var xmlhttp;
+								if (window.XMLHttpRequest)
+								  {// code for IE7+, Firefox, Chrome, Opera, Safari
+								  xmlhttp=new XMLHttpRequest();
+								  }
+								else
+								  {// code for IE6, IE5
+								  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+								  }
+								xmlhttp.onreadystatechange=function()
+								  {
+								  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+								    {
+								        $(xmlhttp.responseText).find('#alluploads').each(function(){
+						                document.getElementById("alluploads").innerHTML=$(this).html(); //here including the div content
+						            });
+								    
+								    }
+								  }
+								xmlhttp.open("GET","upload",true);
+								xmlhttp.send();
+				           }
+				         });
+
+				    return false; // avoid to execute the actual submit of the form.
+				});
+			/*===========for date picker ============*/
+				$("#datepicker").datepicker({ dateFormat: 'yy-dd-mm'});
 
 		});
 		Holder.add_theme("dark", {background:"#000", foreground:"#aaa", size:11, font: "Monaco"})

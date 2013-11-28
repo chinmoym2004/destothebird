@@ -21,6 +21,8 @@ class CreateUsersUploadTable extends Migration {
 			$table->string('specisname',100);
 			$table->string('specificname',100);
 			$table->string('area',50);
+			$table->string('recorded_on',50);
+			$table->string('identified_img',100);
 			$table->integer('identfId')->index();
 			$table->timestamps();
 		});
