@@ -65,7 +65,6 @@
         </style>
         <!-- <link rel="stylesheet" href="css/bootstrap-theme.min.css"> -->
         <link rel="stylesheet" href="{{URL::asset('css/main.css') }}" >
-		<link rel="stylesheet" href="{{URL::asset('css/upload/jquery.fileupload.css') }}" >
 
         <script src="{{URL::asset('js/vendor/modernizr-2.6.2-respond-1.1.0.min.js') }}"></script>
     </head>
@@ -86,14 +85,14 @@
 	        <div class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav">
 			  @if(!Auth::check())
-				<li class="active" id="home">
+				<li class="" id="home">
 					{{ HTML::link('/', 'Home') }}
 				</li>
 	            <li id="agal">
 					{{ HTML::link('home/audiogallery', 'Audio Gallery') }}
 				</li>
 			  @else
-				<li class="active" id="home">{{ HTML::link('/', 'Home') }}</li>
+				<li class="" id="home">{{ HTML::link('/', 'Home') }}</li>
 	            <li id="agal">{{ HTML::link('home/audiogallery', 'Audio Gallery') }}</li>
 	            <li id="upload">{{ HTML::link('users/upload', 'Upload') }}</li>
 	            
@@ -184,6 +183,7 @@
 
 <!--This are for file upload-->
 
+		<link rel="stylesheet" href="{{URL::asset('css/upload/jquery.fileupload.css') }}" >
 		<!-- Third party script for BrowserPlus runtime (Google Gears included in Gears runtime now) -->
 		<script type="text/javascript" src="{{ URL::asset('js/vendor/fileupload/jquery.ui.widget.js')}}"></script>
 		<!-- Load plupload and all it's runtimes and finally the jQuery queue widget -->
@@ -191,7 +191,7 @@
 		<script type="text/javascript" src="{{ URL::asset('js/vendor/fileupload/jquery.fileupload.js')}}"></script>
 <!--This are for audio play -->
 
-		<script type="text/javascript" src="{{ URL::asset('js/vendor/audiojs/audio.min.js')}}"></script>
+		<script type="text/javascript" src="{{ URL::asset('js/howler-js-master/howler.js')}}"></script>
 
 <!-- for inline edit options -->
 		<link href="{{ URL::asset('css/bootstrap3-editable/bootstrap-editable.css')}}" rel="stylesheet">
@@ -210,6 +210,31 @@
 				var value = re.exec(document.cookie); 
 					return (value != null) ? unescape(value[1]) : null; 
 			}
+
+	    // Define value names
+        var options = {
+    	    valueNames: [ 'birdSpecies', 'birdName']
+        };
+        var options2 = {
+    	    valueNames: [ 'birdArea']
+        };
+        
+
+        // Init list
+        var birdList = new List('audio-gallery-list', options);
+
+        // $('#search').keypress(searchNames);	
+        // $('#searchArea').keypress(searchArea);	
+
+        function searchNames(event){
+        	var birdList = new List('audio-gallery-list', options);
+        }
+
+        function searchArea(event){
+        	var birdLista = new List('audio-gallery-list', options2);
+        }
+
+
 		$(document).ready(function() {
 			$('#myCarousel').carousel({
 				interval: 10000
@@ -226,7 +251,8 @@
 				//$().addClass("active"); */
 			});
 
-			/*=================For file upload===============*/
+			/*=================For audio file upload===============*/
+			
 			var url = 'upload';
 			    $('#fileupload').fileupload({
 			        url: url,
@@ -267,33 +293,44 @@
 
 			/*===============End=============*/
 
-			/*============for audio play==========*/
-			audiojs.events.ready(function() {
-			    var as = audiojs.createAll();
-			  });
+			
 			/*============end============*/
 			/*=========for model wise operation =========*/
-			$("a").click(function(){
+			var imagefo
+			$("a").click(function(e){
+				e.preventDefault();
 				/*-----for edit-----*/
 				if($(this).hasClass("editinfo"))
+				{
 					$("#edituploadinfo").attr("action","uploadedinfoupdate/"+$(this).attr("id"));
+					$("#identified_img").attr("data-id",$(this).attr("id"));
+				}
 				/*-----for delete-----*/
 				if($(this).hasClass("deleteinfo"))
+				{
 					$("#deleteuploadinfo").attr("action","uploadedinfodelete/"+$(this).attr("id"));
+				}
+				/*============for audio play==========*/
+				if($(this).hasClass("playaudio"))
+				{
+						//alert($(this).attr("href"));
+					var sound = new Howl({
+					  urls: [$(this).attr("href")]
+					}).play();
+				}
 			});
 
 
 			/*==========post all data after edit to update==============*/
-
+/*
 				$("#edituploadinfo").submit(function(e) {
 					e.preventDefault();
 
 				    //var url =$(this).attr("action"); // the script where you handle the form input.
-
 				    $.ajax({
 				           type: "POST",
 				           url: $(this).attr("action"),
-				           data: $(this).serialize(), // serializes the form's elements.
+				           data: $(this).serialize()+'&'+$.param({ 'image': $('#fname').val() }),// serializes the form's elements.
 				           success: function(data)
 				           {
 				               $("#edituploadinfo")[0].reset();
@@ -326,7 +363,7 @@
 				    return false; // avoid to execute the actual submit of the form.
 				});
 
-
+*/
 			/*==========ajax data delete from upload table and dispaly result after delete==============*/
 
 				$("#deleteuploadinfo").submit(function(e) {
@@ -370,8 +407,26 @@
 				});
 			/*===========for date picker ============*/
 				$("#datepicker").datepicker({ dateFormat: 'yy-dd-mm'});
+			/*=================For image file upload for a audio===============
+			var url = 'uploadimageforaudio';
+			    $('#identified_img').fileupload({
+			        url: url,
+			        dataType: 'json',
+			        done: function (e,response) {
+			        	$("#files").html(response); 
+			        	
+					},
+			        progressall: function (e,data) {
+			            var progress = parseInt(data.loaded / data.total * 100, 10);
+			            $('#progress1 .progress-bar').css(
+			                'width',
+			                progress + '%'
+			            );
+			        }
+			    }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');*/
 
 		});
+
 		Holder.add_theme("dark", {background:"#000", foreground:"#aaa", size:11, font: "Monaco"})
 		</script>
         <!--

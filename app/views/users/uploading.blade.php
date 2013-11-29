@@ -14,7 +14,6 @@
     <!-- The container for the uploaded files -->
     <div id="files" class="files"></div>
     <br>
-
 </div>
 
 
@@ -45,15 +44,17 @@
 								
 									@foreach ($alluploadbyu as $upload)
 										<tr>
-										  <td><img src="<?php echo $upload->identified_img;?>" class="thumb" /></td>
+										  <td>
+												<img src="<?php echo '../uploads/images/'.$upload->identified_img; ?>" class="thumb" />
+										 </td>
 
-										  <td>{{ $upload->specisname }}</td>
+										  <td class="birdSpecies">{{ $upload->specisname }}</td>
 
-										  <td>{{ $upload->specificname }}</td>
-										  <td>{{ $upload->area }}</td>
+										  <td class="birdName">{{ $upload->specificname }}</td>
+										  <td class="birdArea">{{ $upload->area }}</td>
 										  <td>{{ $upload->recorded_on }}</td>
 
-										  <td><a href="#" title="Play"><span class="glyphicon glyphicon-play"></san>
+										  <td><a href="../<?php echo $upload->filpath;?>" title="Play" class="playaudio"><span class="glyphicon glyphicon-play"></san>
 										  </a></td>
 
 										  <td><a href="#" title="Delete" data-toggle="modal" class="deleteinfo" data-target="#deleteModal" id="<?php echo $upload->id;?>"><span class="glyphicon glyphicon-trash"></san>
@@ -68,25 +69,13 @@
 								
 								@else								
 									<tr>
-									  <td colspan="6" style="margin-top:50px"><h3>You haven't uploaded yet !!</h3></td>
+									  <td colspan="6" style="margin-top:50px"><h5>No records found</h5></td>
 									</tr>
 								@endif
 	                            </tbody>
 	                        </table>	 
-	                        <div id="pager" class="pager">
-								<form>
-									<img src="img/first.png" class="first"/>
-									<img src="img/prev.png" class="prev"/>
-									<input type="text" class="pagedisplay"/>
-									<img src="img/next.png" class="next"/>
-									<img src="img/last.png" class="last"/>
-									<select class="pagesize">
-										<option selected="selected"  value="10">10</option>
-										<option value="20">20</option>
-										<option value="30">30</option>
-										<option  value="40">40</option>
-									</select>
-								</form>
+	                        <div id="pager" class="pager" style="margin-top:20px;">
+									<?php echo $alluploadbyu->links(); ?>
 							</div>                       
 	                    </div>
  
@@ -105,24 +94,22 @@
         <h4 class="modal-title" id="myModalLabel">Edit Identification</h4>
       </div>
       <div class="modal-body">
-        	{{ Form::open(array('role'=>'form','id'=>'edituploadinfo')) }}
+        	{{ Form::open(array('role'=>'form','id'=>'edituploadinfo','files' => 'true')) }}
 				  <div class="form-group">
-				    <input type="text" class="form-control" id="specisname" name="specisname" placeholder="Enter specis name">
+				    <input type="text" class="form-control" id="specisname" name="specisname" placeholder="Enter specis name" required>
 				  </div>
 
 				  <div class="form-group">
-				    <input type="text" class="form-control" id="specificname" name="specificname" placeholder="Enter specific name">
+				    <input type="text" class="form-control" id="specificname" name="specificname" placeholder="Enter specific name" required>
 				  </div>
 				  <div class="form-group">
-				    <input type="text" class="form-control" id="area" name="area" placeholder="Where you recorded this ?">
+				    <input type="text" class="form-control" id="area" name="area" placeholder="Where you recorded this ?" required>
 				  </div>
 				  <div class="form-group">
 				    <input type="text" class="form-control" id="datepicker" name="recorded_on" placeholder="When you recorder ? e.g. 2011-11-11" autocomplete='off'>
 				  </div>
 				  <div class="form-group">
-				    <label for="identified_img">Upload Image</label>
-				    <input type="file" id="identified_img" name="file"><br/>
-				    <img href="#" class="thumbnail" data-src="holder.js/150x180"/>
+						<input type="file" name="image" id="fname"/>
 				  </div>
 				  <button type="reset" class="btn btn-default" data-dismiss="modal">Cancle</button>&nbsp;&nbsp;&nbsp;
 				  <button type="submit" class="btn btn-default">Save</button>

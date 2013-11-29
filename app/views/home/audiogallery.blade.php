@@ -39,17 +39,17 @@
 									{
 										foreach($alluploadbyu as $tmp)
 										{
-											echo '<td><img src="img/birds/Acadian_Flycatcher.gif" class="thumb" /></td>';
+											echo '<tr><td><img src="../uploads/images/'.$tmp->identified_img.'" class="thumb" /></td>';
 											echo "<td>".$tmp->specisname."</td>";
 											echo "<td>".$tmp->specificname."</td>";
 											echo "<td>".$tmp->area."</td>";
-											echo "<td>NA</td>";
+											echo "<td>Unknown</td></tr>";
 											
 										}
 									}
 									else
 									{
-											echo "<td><h3>No verification done yet :-( </h3></td>";
+											echo "<tr><td colspan='5'><h5>No audio clip found </h5></td><tr>";
 									}
 								?>
 	                            	<!--
@@ -63,21 +63,9 @@
 	                            	</tr>-->
 	                            </tbody>
 	                        </table>	 
-	                        <div id="pager" class="pager">
-								<form>
-									<img src="img/first.png" class="first"/>
-									<img src="img/prev.png" class="prev"/>
-									<input type="text" class="pagedisplay"/>
-									<img src="img/next.png" class="next"/>
-									<img src="img/last.png" class="last"/>
-									<select class="pagesize">
-										<option selected="selected"  value="10">10</option>
-										<option value="20">20</option>
-										<option value="30">30</option>
-										<option  value="40">40</option>
-									</select>
-								</form>
-							</div>                       
+	                        <div id="pager" class="pager" style="margin-top:20px;">
+									<?php echo $alluploadbyu->links(); ?>
+							</div>                        
 	                    </div>
 	                    
 	                </div>

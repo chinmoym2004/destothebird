@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2013 at 02:08 PM
+-- Generation Time: Nov 29, 2013 at 01:24 PM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.19
 
@@ -122,9 +122,10 @@ CREATE TABLE IF NOT EXISTS `users_upload` (
 --
 
 INSERT INTO `users_upload` (`id`, `uid`, `filpath`, `status`, `specisname`, `specificname`, `area`, `recorded_on`, `identified_img`, `identfId`, `created_at`, `updated_at`) VALUES
-(1, 1, 'uploads/file_5296ca65f1b9d', 'Not verified', 'chin2', 'chin2', 'chennai2', '0000000000000', '', 0, '2013-11-27 23:15:27', '0000-00-00 00:00:00'),
-(3, 1, 'uploads/Sleep Away.mp3', 'Not verified', 'last', 'last', 'last', 'er8ti gi', '', 0, '2013-11-27 23:47:29', '0000-00-00 00:00:00'),
-(4, 1, 'uploads/Sleep Away.mp3', 'Not verified', 'last2', 'last21', 'last21', 'good nit1', '', 0, '2013-11-28 06:29:52', '0000-00-00 00:00:00');
+(3, 1, 'uploads/Sleep Away.mp3', 'verified', 'Acadian Flycatcher', 'Empidonax virescens', 'America', '2013-29-11', 'dfva1Y_Acadian_Flycatcher.gif', 0, '2013-11-27 23:47:29', '0000-00-00 00:00:00'),
+(4, 1, 'uploads/Sleep Away.mp3', 'verified', 'Acorn Woodpecke', 'Melanerpes formicivorus', 'America', '2013-29-11', 'Fba9dD_Acorn_Woodpecker.gif', 0, '2013-11-28 06:29:52', '0000-00-00 00:00:00'),
+(5, 1, 'uploads/audios/audio_file_529879266ace6.mp3', 'verified', 'Allens Hummingbirdr', 'Selasphorus sasin', 'America', '2013-29-11', 'sOyTYP_Allens_Hummingbird.gif', 0, '2013-11-29 05:53:19', '0000-00-00 00:00:00'),
+(6, 1, 'uploads/audios/audio_file_529882682461a.mp3', 'Not verified', 'Not verified', 'Not verified', 'Not verified', '', '', 0, '2013-11-29 06:32:49', '0000-00-00 00:00:00');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

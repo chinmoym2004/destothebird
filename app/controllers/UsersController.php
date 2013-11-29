@@ -62,14 +62,19 @@ class UsersController extends BaseController {
 		$this->layout->content = View::make('users.identify',$data);
 	} 
 	public function postUpload(){
-		$data=array('title'=>'identify the bird');
+		$data=array('title'=>'upload and grt identify the bird');
 		$this->layout->content = View::make('users.upload',$data);
 	}
 	public function getUpload(){
 		//$data=array('title'=>'Upload audio to identify the bird');
-		$id = Auth::user()->id;
-		$data=array('alluploadbyu' => DB::table('users_upload')->where('uid','=',$id)->orderBy('created_at', 'desc')->get());		
-		$this->layout->content = View::make('users.uploading',$data);
+		if(Auth::check()){
+			$id = Auth::user()->id;
+			$data=array('alluploadbyu' => DB::table('users_upload')->where('uid','=',$id)->orderBy('created_at', 'desc')->paginate(2),'title'=>'upload and grt identify the bird');		
+			$this->layout->content = View::make('users.uploading',$data);
+		}
+		else{
+			$this->layout->content = View::make('users.login');
+		}
 	}
 	public function getIdentifyrequest(){
 		$data=array('title'=>'Upload audio to identify the bird');
@@ -84,18 +89,56 @@ class UsersController extends BaseController {
 		$specificname=Input::get('specificname')?Input::get('specificname'):'NA';
 		$area=Input::get('area')?Input::get('area'):'NA';
 		$recorded_on=Input::get('recorded_on')?Input::get('recorded_on'):'NA';
-		DB::table('users_upload')
-            ->where('id', $id)
-            ->update(array('specisname' => $specisname,'specificname' => $specificname,'area' => $area,'recorded_on' => $recorded_on));
+		$file = Input::file('image'); // your file upload input field in the form should be named 'file'
+
+/*		$destinationPath = 'uploads/images/';
+		$extension=pathinfo($file["name"], PATHINFO_EXTENSION);
+		$filename = uniqid("image_file_").'.'.$extension; 
+		//Input::file('file')->move($destinationPath, $fileName);
+		
+		if (is_array($file) && isset($file['error']) && $file['error'] == 0) {
+		 //Input::upload('file',path('upload').'/images/'$filename);
+		 Input::upload('file','public/uploads/images/', $filename);
+		}*/
+		$destinationPath = '';
+	    $filename        = '';
+
+	    if (Input::hasFile('image')) {
+	        $file            = Input::file('image');
+	        $destinationPath = public_path().'/uploads/images/';
+	        $filename        = str_random(6) . '_' . $file->getClientOriginalName();
+	        $uploadSuccess   = $file->move($destinationPath, $filename);
+	        if($uploadSuccess) 
+			    {
+			        error_log("Destination: $destinationPath");
+			        error_log("Filename: $filename");
+			        error_log("Extension: ".$file->getClientOriginalExtension());
+			        error_log("Original name: ".$file->getClientOriginalName());
+			        error_log("Real path: ".$file->getRealPath());
+			    }
+			    else
+			    {
+			        error_log("Error moving file: ".$file->getClientOriginalName());
+			    }
+	    }
+	    else{
+	    	echo $file;exit;
+	    }
+		DB::table('users_upload')->where('id', $id)->update(array('specisname' => $specisname,'specificname' => $specificname,'area' => $area,'recorded_on' => $recorded_on,'identified_img'=>$filename,'status'=>'verified'));
        //$this->layout->content = View::make('users.uploading');
         $id = Auth::user()->id;
-		$data=array('alluploadbyu' => DB::table('users_upload')->where('uid','=',$id)->orderBy('created_at', 'desc')->get());		
+		$data=array('alluploadbyu' => DB::table('users_upload')->where('uid','=',$id)->orderBy('created_at', 'desc')->paginate(2));		
 		$this->layout->content = View::make('users.uploading',$data);
+		//Redirect::to('users/uploading');
 	}
 	public function postUploadedinfodelete($id){
 	        DB::table('users_upload')->where('id', '=', $id)->delete();
 	        $id = Auth::user()->id;
-			$data=array('alluploadbyu' => DB::table('users_upload')->where('uid','=',$id)->orderBy('created_at', 'desc')->get());		
+			$data=array('alluploadbyu' => DB::table('users_upload')->where('uid','=',$id)->orderBy('created_at', 'desc')->paginate(2));		
 			$this->layout->content = View::make('users.uploading',$data);
-		}
+	}
+	public function postUploadimageforaudio(){
+		$data=array("Upload image for this audio");
+		$this->layout->content = View::make('users.uploadimage',$data);
+	}
 }

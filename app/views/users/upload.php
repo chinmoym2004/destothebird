@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 // Settings
 //$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-$targetDir = 'uploads';
+$targetDir = 'uploads/audios';
 $cleanupTargetDir = false; // Remove old files
 $maxFileAge = 5 * 3600; // Temp file age in seconds
 
@@ -50,7 +50,7 @@ if (!file_exists($targetDir)) {
 }
 
 // Get a file name
-if (isset($_REQUEST["filename"])) {
+/*if (isset($_REQUEST["filename"])) {
 	$fileName = $_REQUEST["filename"];
 } elseif (!empty($_FILES)) {
 	//print_r($_FILES);exit;
@@ -58,11 +58,16 @@ if (isset($_REQUEST["filename"])) {
 	//echo $fileName;exit;
 } else {
 	$fileName = uniqid("file_");
-}
+}*/
+$ext = pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
+$fileName = uniqid("audio_file_").'.'.$ext;
 
-//$filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
+//echo $fileName;exit;
+
+///$filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 
 $filePath = $targetDir . '/' . $fileName;
+
 
 $id = Auth::user()->id;
 

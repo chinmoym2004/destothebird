@@ -42,3 +42,7 @@ Route::post('users/upload', array('before' => 'auth','UsersController@postUpload
 
 Route::post('users/uploadedinfoupdate/{id}',array('UsersController@postUploadedinfoupdate'));
 Route::post('users/uploadedinfodelete/{id}',array('UsersController@postUploadedinfodelete'));
+Route::post('users/uploadimageforaudio',array('UsersController@postUploadimageforaudio'));
+
+
+	
