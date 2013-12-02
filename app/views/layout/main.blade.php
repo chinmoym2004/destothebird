@@ -298,7 +298,7 @@
 			/*=========for model wise operation =========*/
 			var imagefo
 			$("a").click(function(e){
-				e.preventDefault();
+				//e.preventDefault();
 				/*-----for edit-----*/
 				if($(this).hasClass("editinfo"))
 				{
