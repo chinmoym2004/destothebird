@@ -31,6 +31,7 @@
 	                        			<th>Specific Name</th>
 	                        			<th>Area</th>
 	                        			<th>Uploaded By</th>
+	                        			<th>play</th>
 	                        		</tr>
 	                        	</thead>
 	                            <tbody class="list">
@@ -39,12 +40,18 @@
 									{
 										foreach($alluploadbyu as $tmp)
 										{
-											echo '<tr><td><img src="../uploads/images/'.$tmp->identified_img.'" class="thumb" /></td>';
-											echo "<td>".$tmp->specisname."</td>";
-											echo "<td>".$tmp->specificname."</td>";
-											echo "<td>".$tmp->area."</td>";
-											echo "<td>Unknown</td></tr>";
+								?>
+								<tr>
+									<td><img src="<?php echo asset('/uploads/image/').'/'.$tmp->identified_img;?>" class="thumb"/></td>
+									<td class='birdSpecies'><?php echo $tmp->specisname;?></td>
+									<td class='birdName'><?php echo $tmp->specificname;?></td>
+									<td class="birdArea" title="<?php echo 'State : '.$tmp->state.',City : '.$tmp->city;?>"><?php echo $tmp->area;?></td>
+									<td><?php echo $tmp->firstname." ".$tmp->lastname;?></td>
+									<td><a href="<?php echo asset('/uploads/audio/').'/'.$tmp->filpath;?>" title="Play" class="playaudio"><span class="glyphicon glyphicon-play"></san>
+									</a></td>
+								</tr>
 											
+								<?php
 										}
 									}
 									else

@@ -25,8 +25,8 @@ class HomeController extends BaseController {
             ->join('users', 'users.id', '=', 'users_upload.uid')->where('users_upload.status','=','verified')
             ->select('users.firstname','users.lastname','users.email','users_upload.filpath','users_upload.specisname','users_upload.specificname','users_upload.area')->paginate(2));
 */		
-		$data=array('alluploadbyu' => DB::table('users_upload')->where('users_upload.status','=','verified')
-            ->select('users_upload.identified_img','users_upload.specisname','users_upload.specificname','users_upload.area')->paginate(2));
+		$data=array('alluploadbyu' => DB::table('users_upload')->join('users', 'users_upload.uid', '=', 'users.id')->where('users_upload.status','=','verified')
+            ->select('users_upload.identified_img','users_upload.filpath','users_upload.specisname','users_upload.specificname','users_upload.area','users_upload.state','users_upload.city','users.firstname','users.lastname')->paginate(50));
 
 		$this->layout->content = View::make('home.audiogallery',$data);
 	}

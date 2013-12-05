@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 29, 2013 at 01:24 PM
+-- Generation Time: Dec 04, 2013 at 10:05 AM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.19
 
@@ -19,8 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `thebird`
 --
-CREATE DATABASE IF NOT EXISTS `thebird` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `thebird`;
+CREATE DATABASE IF NOT EXISTS `desto2_thebird` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `desto2_thebird`;
 
 -- --------------------------------------------------------
 
@@ -80,18 +80,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `useras` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `admin` int(2) NOT NULL,
+  `expart` int(2) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`, `password`, `useras`, `created_at`, `updated_at`) VALUES
-(1, 'chiin', 'Maity', 'chinmoym2004@gmail.com', '$2y$08$CEIu1drIl77VUEsCwoA7ge/8Tt.MVFF8lym0k2pOQtLqeNmVGWABq', '1', '2013-11-26 06:53:26', '2013-11-26 06:53:26');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -106,7 +101,13 @@ CREATE TABLE IF NOT EXISTS `users_upload` (
   `status` enum('Not verified','verified','processing','unknown') COLLATE utf8_unicode_ci NOT NULL,
   `specisname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `specificname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `cnamebyexp` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `snamebyexp` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `cnamebyalgo` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `snamebyalgo` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `area` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `city` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `state` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `recorded_on` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `identified_img` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `identfId` int(11) NOT NULL,
@@ -115,17 +116,7 @@ CREATE TABLE IF NOT EXISTS `users_upload` (
   PRIMARY KEY (`id`),
   KEY `users_upload_uid_index` (`uid`),
   KEY `users_upload_identfid_index` (`identfId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
-
---
--- Dumping data for table `users_upload`
---
-
-INSERT INTO `users_upload` (`id`, `uid`, `filpath`, `status`, `specisname`, `specificname`, `area`, `recorded_on`, `identified_img`, `identfId`, `created_at`, `updated_at`) VALUES
-(3, 1, 'uploads/Sleep Away.mp3', 'verified', 'Acadian Flycatcher', 'Empidonax virescens', 'America', '2013-29-11', 'dfva1Y_Acadian_Flycatcher.gif', 0, '2013-11-27 23:47:29', '0000-00-00 00:00:00'),
-(4, 1, 'uploads/Sleep Away.mp3', 'verified', 'Acorn Woodpecke', 'Melanerpes formicivorus', 'America', '2013-29-11', 'Fba9dD_Acorn_Woodpecker.gif', 0, '2013-11-28 06:29:52', '0000-00-00 00:00:00'),
-(5, 1, 'uploads/audios/audio_file_529879266ace6.mp3', 'verified', 'Allens Hummingbirdr', 'Selasphorus sasin', 'America', '2013-29-11', 'sOyTYP_Allens_Hummingbird.gif', 0, '2013-11-29 05:53:19', '0000-00-00 00:00:00'),
-(6, 1, 'uploads/audios/audio_file_529882682461a.mp3', 'Not verified', 'Not verified', 'Not verified', 'Not verified', '', '', 0, '2013-11-29 06:32:49', '0000-00-00 00:00:00');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=59 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

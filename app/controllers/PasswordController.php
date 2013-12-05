@@ -31,7 +31,7 @@ class PasswordController extends BaseController {
 	 
 	    $user->save();
 	 
-	    return Redirect::to('users/login')->with('flash', 'Your password has been reset');
+	    return Redirect::to('users/login')->with('flash', '<strong>Great !</strong>your password has been saved successfully. Login to continue');
 	  });
 	}
 }

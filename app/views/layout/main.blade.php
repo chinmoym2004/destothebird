@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
+        <title>Wildlife Acoustics</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <link rel="stylesheet" href="{{ URL::asset('css/bootstrap.css') }}">
@@ -96,8 +96,11 @@
 	            <li id="agal">{{ HTML::link('home/audiogallery', 'Audio Gallery') }}</li>
 	            <li id="upload">{{ HTML::link('users/upload', 'Upload') }}</li>
 	            
-		            @if(Auth::user()->useras==2)
-		            	<li id="identify">{{ HTML::link('users/identify', 'Identify') }}</li>
+		            @if(Auth::user()->expart==1)
+		            	<!-- <li id="identify">{{ HTML::link('users/identify', 'Identify') }}</li> -->
+		             @endif
+		             @if(Auth::user()->admin==1)
+		            	<li id="identify">{{ HTML::link('users/setting', 'Setting') }}</li>
 		             @endif
 	           		<!--<li><a href="#exclusive-gallery">Exclusive Gallery</a></li>-->
 			  @endif
@@ -152,9 +155,12 @@
 		<!--Here is your content goes . all other layout will be displayed under this layout -->
 
 	    <div class="container">
-	      <!--@if(Session::has('message'))
-	         <div class="alert">{{ Session::get('message') }}</div>
-	      @endif -->
+	      @if(Session::has('message'))
+	      	<div class="alert alert-warning alert-dismissable">
+			  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			  {{ Session::get('message') }}.
+			</div>
+	      @endif
 		  {{ $content }}
 	    </div>
 		<script></script>
@@ -198,19 +204,24 @@
 		<script src="{{ URL::asset('js/bootstrap3-editable/bootstrap-editable.js')}}"></script>
 <!-- end -->
 
-<!-- for date picker -->
+<!-- for date picker and tooltip -->
 		<link href="{{ URL::asset('css/datepicker/jquery-ui.css')}}" rel="stylesheet">
 		<script src="{{ URL::asset('js/datepicker/jquery-ui.js')}}"></script>
 <!-- end -->
 
+<!-- state city region -- >
+	<script src="{{ URL::asset('js/state_city_region.js')}}"></script>
+<!-- end -->
 		<script type="text/javascript">
-		function getCookie(name) 
+		/*function getCookie(name) 
 			{ 
 				var re = new RegExp(name + "=([^;]+)"); 
 				var value = re.exec(document.cookie); 
 					return (value != null) ? unescape(value[1]) : null; 
 			}
-
+		*/
+	    // Define value names
+        
 	    // Define value names
         var options = {
     	    valueNames: [ 'birdSpecies', 'birdName']
@@ -222,6 +233,7 @@
 
         // Init list
         var birdList = new List('audio-gallery-list', options);
+        //var birdList1 = new List('audio-gallery-list', options2);
 
         // $('#search').keypress(searchNames);	
         // $('#searchArea').keypress(searchArea);	
@@ -231,11 +243,18 @@
         }
 
         function searchArea(event){
-        	var birdLista = new List('audio-gallery-list', options2);
+        	var birdList = new List('audio-gallery-list', options2);
         }
 
+        
 
 		$(document).ready(function() {
+			/*==============for tooltip ==========*/
+
+			$(document).tooltip({
+				track: true
+			});
+
 			$('#myCarousel').carousel({
 				interval: 10000
 			});	
@@ -272,9 +291,15 @@
 							  {
 							  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 							    {
-							        $(xmlhttp.responseText).find('#alluploads').each(function(){
+							       // $.get("upload");
+							        location.reload('users/upload'); 
+							       
+							       /* $(xmlhttp.responseText).find('#alluploads').each(function(){
 					                document.getElementById("alluploads").innerHTML=$(this).html(); //here including the div content
-					            });
+					                $('#editModal').modal('show');
+
+					            });*/
+			    				
 							    
 							    }
 							  }
@@ -296,18 +321,33 @@
 			
 			/*============end============*/
 			/*=========for model wise operation =========*/
-			var imagefo
+			var imagefo;
 			$("a").click(function(e){
 				//e.preventDefault();
 				/*-----for edit-----*/
 				if($(this).hasClass("editinfo"))
 				{
+					$("#edituploadinfo").removeAttr("action");
 					$("#edituploadinfo").attr("action","uploadedinfoupdate/"+$(this).attr("id"));
+					/*$.get("loadmodeltoupdate?id="+$(this).attr("id"),function(data){
+						$("#edituploadinfo").html(data);	
+					});*/
+					//$("#faudio").attr('disabled',true);
+					$("#specisname").val($("#td1-"+$(this).attr("id")).text());
+					$("#specificname").val($("#td2-"+$(this).attr("id")).text());
+					$("#cnamebyexp").val($("#td3-"+$(this).attr("id")).text());
+					$("#snamebyexp").val($("#td4-"+$(this).attr("id")).text());
+					$("#cnamebyalgo").val($("#td5-"+$(this).attr("id")).text());
+					$("#snamebyalgo").val($("#td6-"+$(this).attr("id")).text());
+					$("#area").val($("#td7-"+$(this).attr("id")).text());
+					$("#datepicker").val($("#td8-"+$(this).attr("id")).text());
+					document.getElementById('faudio').disabled = true;
 					$("#identified_img").attr("data-id",$(this).attr("id"));
 				}
 				/*-----for delete-----*/
 				if($(this).hasClass("deleteinfo"))
 				{
+					//$("#deleteuploadinfo").removeAttr("action");
 					$("#deleteuploadinfo").attr("action","uploadedinfodelete/"+$(this).attr("id"));
 				}
 				/*============for audio play==========*/
@@ -319,7 +359,21 @@
 					}).play();
 				}
 			});
+			$("#newupload").click(function(){
+				$("#edituploadinfo").removeAttr("action");
+				$("#edituploadinfo").attr("action","uploadedinfoupdate/0");
+				$("#specisname").val("");
+				$("#specificname").val("");
+				$("#cnamebyexp").val("");
+				$("#snamebyexp").val("");
+				$("#cnamebyalgo").val("");
+				$("#snamebyalgo").val("");
+				$("#area").val("");
+				$("#datepicker").val("");
+				document.getElementById('faudio').disabled = false;
+				//$("#faudio").attr('disabled',false);
 
+			});
 
 			/*==========post all data after edit to update==============*/
 /*
@@ -392,10 +446,14 @@
 								  {
 								  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 								    {
+								        /*
 								        $(xmlhttp.responseText).find('#alluploads').each(function(){
 						                document.getElementById("alluploads").innerHTML=$(this).html(); //here including the div content
-						            });
-								    
+						                
+
+						            });*/
+								    location.reload("users/upload");
+
 								    }
 								  }
 								xmlhttp.open("GET","upload",true);
@@ -425,6 +483,23 @@
 			        }
 			    }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');*/
 
+				/* ========for user setting ===========*/
+				$('#usertype').on('change', '', function (e) {
+						var optionSelected = $("option:selected", this);
+    					var valueSelected = this.value;
+    					$.post("setting",{usertype:valueSelected,userid:this.name},function(){
+
+    					}).done(function() {
+						    alert( "User's privilege Updated ..." );
+						});
+						/*.fail(function() {
+						    alert( "error" );
+						})
+						.always(function() {
+						    alert( "finished" );
+						 });*/
+    					//alert(valueSelected+"name:"+this.name);
+				});
 		});
 
 		Holder.add_theme("dark", {background:"#000", foreground:"#aaa", size:11, font: "Monaco"})

@@ -41,8 +41,12 @@ Route::get('users/upload', array('before' => 'auth','UsersController@getUpload')
 Route::post('users/upload', array('before' => 'auth','UsersController@postUpload'));
 
 Route::post('users/uploadedinfoupdate/{id}',array('UsersController@postUploadedinfoupdate'));
+
 Route::post('users/uploadedinfodelete/{id}',array('UsersController@postUploadedinfodelete'));
 Route::post('users/uploadimageforaudio',array('UsersController@postUploadimageforaudio'));
+
+Route::get('users/setting',array('UsersController@getSetting'));
+Route::post('users/setting',array('UsersController@postSetting'));
 
 
 	

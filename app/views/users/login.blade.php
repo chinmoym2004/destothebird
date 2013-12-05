@@ -3,8 +3,8 @@
 	{{ Form::open(array('url'=>'users/signin', 'class'=>'form-signin')) }}
 	   <h2 class="form-signin-heading">Please Login</h2>
 	 
-	   {{ Form::text('email', null, array('class'=>'form-control', 'placeholder'=>'Email Address','required')) }}<br/>
-	   {{ Form::password('password', array('class'=>'form-control', 'placeholder'=>'Password','required')) }}<br/>
+	   {{ Form::text('email', null, array('class'=>'form-control', 'placeholder'=>'Email Address','required','value'=>'')) }}<br/>
+	   {{ Form::password('password', array('class'=>'form-control', 'placeholder'=>'Password','required','value'=>'')) }}<br/>
 	 
 	    <div class="control-group">
 			<div class="controls">

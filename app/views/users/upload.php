@@ -49,13 +49,13 @@ if (!file_exists($targetDir)) {
 	@mkdir($targetDir);
 }
 
-// Get a file name
-/*if (isset($_REQUEST["filename"])) {
+/* Get a file name
+if (isset($_REQUEST["filename"])) {
 	$fileName = $_REQUEST["filename"];
 } elseif (!empty($_FILES)) {
-	//print_r($_FILES);exit;
+	print_r($_FILES);exit;
 	$fileName = $_FILES["file"]["name"];
-	//echo $fileName;exit;
+	echo $fileName;exit;
 } else {
 	$fileName = uniqid("file_");
 }*/
@@ -74,11 +74,11 @@ $id = Auth::user()->id;
 // insert file info into db ---
 
 
-DB::table('users_upload')->insert(
-    array('uid' => $id, 'filpath' => $filePath,'status'=>'Not verified','specisname'=>'Not verified','specificname'=>'Not verified','area'=>'Not verified','identfId'=>0,'created_at'=>date("Y-m-d H:i:s"))
+$res=DB::table('users_upload')->insertGetId(
+    array('uid' => $id, 'filpath' => $filePath,'status'=>'Not verified','specisname'=>'Not verified','specificname'=>'Not verified','area'=>'Not verified','created_at'=>date("Y-m-d H:i:s"))
 );
-
-
+//Session::push('lastinsert', 'developers');
+$_SESSION['lastinsert']=$res;
 //file_put_contents("test.txt", $id." ".$filePath."\n", FILE_APPEND | LOCK_EX);
 
 

@@ -1,10 +1,18 @@
 <div class="row">
-  <div class="col-md-6">
 	@if (Session::has('error'))
-	  {{ trans(Session::get('reason')) }}
+		<div class="alert alert-info alert-dismissable">
+	  		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+	  		<strong>Sorry!</strong>{{ trans(Session::get('reason')) }}
+		</div>
+	  
 	@elseif (Session::has('success'))
-	  An email with the password reset has been sent.
+	  	<div class="alert alert-info alert-dismissable">
+	  		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+	  		<strong>Great!</strong>an email with the password reset has been sent.
+		</div>
 	@endif
+  <div class="col-md-6">
+	
 	 
 	{{ Form::open(array('route' => 'password.request')) }}
 	 <h2 class="form-signin-heading">Reset Password</h2>
